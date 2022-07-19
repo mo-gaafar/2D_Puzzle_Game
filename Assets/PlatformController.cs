@@ -40,7 +40,10 @@ public class PlatformController : MonoBehaviour {
     void SetState (bool open) {
         isActive = open;
         if (open) {
-            sprite.color = new Color (0f, 0.5f, 1, 0.5f);
+
+            Color tempColor = sprite.color;
+            tempColor.a = 0.5f;
+            sprite.color = tempColor;
             gameObject.layer = LayerMask.NameToLayer ("DisabledPlatform");
             Debug.Log ("Platform disabled");
         } else {
