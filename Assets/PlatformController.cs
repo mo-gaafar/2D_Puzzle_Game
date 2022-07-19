@@ -4,31 +4,33 @@ using UnityEngine;
 
 public class PlatformController : MonoBehaviour {
 
-    public bool isActive;
+    public bool isActive = false;
 
     Collider2D collider;
+    SpriteRenderer sprite;
+    public int collisionHealth = 50;
 
     // Start is called before the first frame update
     void Start () {
         collider = GetComponent<Collider2D> ();
+        sprite = GetComponent<SpriteRenderer> ();
+        DeactivatePlatform ();
     }
 
     // Update is called once per frame
-    void Update () {
-
-    }
+    void Update () { }
 
     public void ActivatePlatform () {
-        if (!isActive)
-            SetState (true);
-    }
-    public void DeactivatePlatform () {
         if (isActive)
             SetState (false);
     }
+    public void DeactivatePlatform () {
+        if (!isActive)
+            SetState (true);
+    }
 
     public void TogglePlatform () {
-        if (isActive) {
+        if (!isActive) {
             DeactivatePlatform ();
         } else {
             ActivatePlatform ();
@@ -37,6 +39,24 @@ public class PlatformController : MonoBehaviour {
 
     void SetState (bool open) {
         isActive = open;
-        collider.isTrigger = open;
+        if (open) {
+            sprite.color = new Color (0f, 0.5f, 1, 0.5f);
+            gameObject.layer = LayerMask.NameToLayer ("DisabledPlatform");
+            Debug.Log ("Platform disabled");
+        } else {
+            sprite.color = new Color (0f, 0.5f, 1f, 1f);
+            gameObject.layer = LayerMask.NameToLayer ("Ground");
+            Debug.Log ("Platform activated");
+        }
+    }
+    private void OnParticleCollision (GameObject other) {
+        collisionHealth--;
+        if (collisionHealth <= 0) {
+
+            TogglePlatform ();
+            collisionHealth = 50;
+        }
+        Debug.Log ("collisionHealth: " + collisionHealth);
+        Debug.Log ("Layer: " + gameObject.layer);
     }
 }

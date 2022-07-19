@@ -43,7 +43,7 @@ public class PlayerMovement : MonoBehaviour {
             ShootParticles (false);
         }
 
-        Flip (); //keep checking for flip
+        // Flip (); //keep checking for flip
     }
 
     private void FixedUpdate () {
