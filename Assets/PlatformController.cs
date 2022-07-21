@@ -6,20 +6,20 @@ using UnityEngine;
 
 public class PlatformController : MonoBehaviour {
 
-    public bool isActive = false;
+    public bool isActive;
 
     Collider2D collider;
     SpriteRenderer sprite;
-
-    public int collisionHealth;
+    public int maxHealth;
+    private int collisionHealth;
     public TextMeshProUGUI healthText;
 
     // Start is called before the first frame update
     void Start () {
         collider = GetComponent<Collider2D> ();
         sprite = GetComponent<SpriteRenderer> ();
-        collisionHealth = 50;
-        DeactivatePlatform ();
+        collisionHealth = maxHealth;
+        SetState (isActive);
     }
 
     // Update is called once per frame
@@ -68,7 +68,7 @@ public class PlatformController : MonoBehaviour {
         if (collisionHealth <= 0) {
 
             TogglePlatform ();
-            collisionHealth = 50;
+            collisionHealth = maxHealth;
         }
         Debug.Log ("collisionHealth: " + collisionHealth);
         Debug.Log ("Layer: " + gameObject.layer);
