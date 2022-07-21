@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PlatformController : MonoBehaviour {
@@ -8,17 +10,25 @@ public class PlatformController : MonoBehaviour {
 
     Collider2D collider;
     SpriteRenderer sprite;
-    public int collisionHealth = 50;
+
+    public int collisionHealth;
+    public TextMeshProUGUI healthText;
 
     // Start is called before the first frame update
     void Start () {
         collider = GetComponent<Collider2D> ();
         sprite = GetComponent<SpriteRenderer> ();
+        collisionHealth = 50;
         DeactivatePlatform ();
     }
 
     // Update is called once per frame
-    void Update () { }
+    void Update () {
+        if (healthText)
+            healthText.text = collisionHealth.ToString ();
+        else
+            Debug.Log ("Null HealthText");
+    }
 
     public void ActivatePlatform () {
         if (isActive)
@@ -54,6 +64,7 @@ public class PlatformController : MonoBehaviour {
     }
     private void OnParticleCollision (GameObject other) {
         collisionHealth--;
+
         if (collisionHealth <= 0) {
 
             TogglePlatform ();
