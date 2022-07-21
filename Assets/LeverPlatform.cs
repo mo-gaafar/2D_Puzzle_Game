@@ -1,34 +1,31 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class PlatformController : MonoBehaviour {
+public class LeverPlatform : MonoBehaviour {
+
+    // public UnityEvent leverOn;
+    // public UnityEvent leverOff;
 
     public bool isActive;
 
-    Collider2D collider;
+    // Collider2D collider;
     SpriteRenderer sprite;
-    public int maxHealth;
-    private int collisionHealth;
-    public TextMeshProUGUI healthText;
 
     // Start is called before the first frame update
     void Start () {
-        collider = GetComponent<Collider2D> ();
+        // leverOn.AddListener (ActivatePlatform);
+        // leverOff.AddListener (DeactivatePlatform);
         sprite = GetComponent<SpriteRenderer> ();
-        collisionHealth = maxHealth;
-        SetState (isActive);
     }
 
     // Update is called once per frame
     void Update () {
-        if (healthText)
-            healthText.text = collisionHealth.ToString ();
-        // else
-        // Debug.Log ("Null HealthText");
+
     }
+
+    //TODO: object oriented can be useful here.... 
 
     public void ActivatePlatform () {
         if (isActive)
@@ -48,6 +45,7 @@ public class PlatformController : MonoBehaviour {
     }
 
     void SetState (bool open) {
+
         isActive = open;
         if (open) {
 
@@ -62,15 +60,5 @@ public class PlatformController : MonoBehaviour {
             Debug.Log ("Platform activated");
         }
     }
-    private void OnParticleCollision (GameObject other) {
-        collisionHealth--;
 
-        if (collisionHealth <= 0) {
-
-            TogglePlatform ();
-            collisionHealth = maxHealth;
-        }
-        Debug.Log ("collisionHealth: " + collisionHealth);
-        Debug.Log ("Layer: " + gameObject.layer);
-    }
 }
