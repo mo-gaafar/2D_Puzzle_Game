@@ -44,7 +44,7 @@ public class LeverController : MonoBehaviour {
     void LeverOff () {
         //turn green alpha to 0
         Color tempColor = greenSprite.color;
-        tempColor.a = 1f;
+        tempColor.a = 0f;
         greenSprite.color = tempColor;
         //turn red alpha to 1
         tempColor = redSprite.color;
