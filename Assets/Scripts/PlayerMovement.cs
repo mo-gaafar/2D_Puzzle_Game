@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerMovement : MonoBehaviour {
     private float horizontal;
@@ -18,22 +19,29 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Transform particleGun;
+    [SerializeField] private Animator animator;
 
     // Update is called once per frame
     void Update () {
 
         horizontal = Input.GetAxis ("Horizontal");
-
+        animator.SetFloat ("Speed", Mathf.Abs (horizontal));
         mousePos = cam.ScreenToWorldPoint (Input.mousePosition);
 
         //if jump is pressed then set y axis velocity to jump power
         if (Input.GetButtonDown ("Jump") && IsGrounded ()) {
             rb.velocity = new Vector2 (rb.velocity.x, jumpingPower);
+            animator.SetBool ("IsJumping", true);
+
         }
 
         // on release, decay y axis velocity to 0
         if (Input.GetButtonUp ("Jump") && rb.velocity.y > 0) {
             rb.velocity = new Vector2 (rb.velocity.x, rb.velocity.y / 2);
+        }
+
+        if (rb.velocity.y < 0.01 && IsGrounded ()) {
+            animator.SetBool ("IsJumping", false);
         }
 
         if (Input.GetMouseButtonDown (0)) {
@@ -64,6 +72,10 @@ public class PlayerMovement : MonoBehaviour {
             particleGun.gameObject.SetActive (true);
         else
             particleGun.gameObject.SetActive (false);
+    }
+
+    public void OnLanding () {
+        animator.SetBool ("IsJumping", false);
     }
 
     // check if player is on the ground
